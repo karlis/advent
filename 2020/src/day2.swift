@@ -32,20 +32,22 @@ func parse(_ input: String) -> [Password] {
 let parsed = parse(loadInput())
 
 func isValid(_ password: Password) -> Bool {
-  let count = password.password.filter { password.char == $0 }.count
-  return count <= password.max && count >= password.min
+  (password.min...password.max)
+    .contains(
+      password.password.filter { password.char == $0 }.count
+    )
 }
 
 func isValid2(_ password: Password) -> Bool {
   let pass = password.password
 
   let index = pass.index(pass.startIndex, offsetBy: password.min - 1)
-  let oIndex = pass.index(pass.startIndex, offsetBy: password.max - 1)
+  let index2 = pass.index(pass.startIndex, offsetBy: password.max - 1)
 
   let first = pass[index] == password.char
-  let second = pass[oIndex] == password.char
+  let second = pass[index2] == password.char
 
-  return (first != second) && (first || second)
+  return first != second
 }
 
 print("1st result:", parsed.filter(isValid).count)
